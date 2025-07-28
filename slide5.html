@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide 5 - DSP Revenue Comparison</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .slide-content {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #2ecc71;
+            font-size: 2.5rem;
+            margin-bottom: 18px;
+        }
+        .navigation {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            margin: 38px auto 0 auto;
+        }
+        .arrow {
+            text-decoration: none;
+            color: #fff;
+            font-size: 2.5rem;
+            transition: color 0.3s;
+            margin: 0 30px;
+        }
+        .arrow:hover {
+            color: #2ecc71;
+        }
+        .legend {
+            margin-top: 10px;
+            display: flex;
+            gap: 36px;
+            justify-content: center;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .legend-box {
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        /* Custom bar colors */
+        .linkedin { background: #0077b5; }
+        .dv360 { background: #ff9200; }
+        .amazon { background: #16a085; }
+
+        @media (max-width: 700px) {
+            .slide-content { max-width: 99vw; }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-content">
+        <h1>DSP Revenue by Month</h1>
+        <canvas id="dspChart" width="800" height="360"></canvas>
+        <div class="legend">
+            <div class="legend-item"><span class="legend-box linkedin"></span>LinkedIn</div>
+            <div class="legend-item"><span class="legend-box dv360"></span>Display & Video 360</div>
+            <div class="legend-item"><span class="legend-box amazon"></span>Amazon OpenRTB</div>
+        </div>
+    </div>
+    <div class="navigation">
+        <a href="slide4.html" class="arrow">&#8592;</a>
+        <a href="slide6.html" class="arrow">&#8594;</a>
+    </div>
+    <script>
+      const ctx = document.getElementById('dspChart').getContext('2d');
+      const data = {
+        labels: ['May', 'June', 'July'],
+        datasets: [
+          {
+            label: 'LinkedIn',
+            data: [468563, 206875, 181468],
+            backgroundColor: '#0077b5',
+            borderRadius: 6,
+            maxBarThickness: 46,
+          },
+          {
+            label: 'Display & Video 360',
+            data: [116184, 157170, 119141],
+            backgroundColor: '#ff9200',
+            borderRadius: 6,
+            maxBarThickness: 46,
+          },
+          {
+            label: 'Amazon OpenRTB',
+            data: [52320, 53352, 44385],
+            backgroundColor: '#16a085',
+            borderRadius: 6,
+            maxBarThickness: 46,
+          }
+        ]
+      };
+      const options = {
+        responsive: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return context.dataset.label + ': $' + context.formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              color: '#222',
+            },
+            ticks: {
+              color: '#fff',
+              font: {
+                size: 16
+              }
+            }
+          },
+          y: {
+            grid: {
+              color: '#333',
+            },
+            ticks: {
+              color: '#fff',
+              font: {
+                size: 14
+              },
+              callback: function(value) {
+                return '$' + value.toLocaleString();
+              }
+            }
+          }
+        }
+      };
+      new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: options
+      });
+    </script>
+</body>
+</html>
