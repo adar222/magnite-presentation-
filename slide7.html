@@ -5,196 +5,157 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slide 7 - Code 63 Trend</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        html, body {
+        body {
             background: #000;
             color: #fff;
+            font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            width: 100vw;
-            height: 100vh;
-            font-family: 'Poppins', Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
         }
-        .slide-content {
-            width: 96vw;
-            max-width: 950px;
-            margin-top: 42px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .container {
+            width: 82vw;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding-top: 36px;
+            padding-bottom: 8px;
         }
         h1 {
+            color: #00FF85;
             font-size: 2.1rem;
-            color: #00FF85;
             margin-bottom: 18px;
             text-align: center;
+            font-weight: 700;
         }
-        .subtitle {
-            color: #ffdd57;
-            font-size: 1.09rem;
-            margin-bottom: 30px;
-            margin-top: 3px;
-            text-align: center;
-        }
-        .chart-container {
-            background: #111;
+        #slide7-chart {
+            background: #191919;
             border-radius: 18px;
-            box-shadow: 0 2px 26px #0008;
-            padding: 38px 30px 25px 30px;
-            width: 100%;
-            max-width: 840px;
-            margin-bottom: 18px;
+            box-shadow: 0 2px 14px 0 rgba(0,0,0,0.18);
+            padding: 26px 18px 10px 18px;
         }
-        .annotation {
-            font-size: 0.98rem;
-            margin: 7px 0 0 0;
-            color: #aaa;
-            text-align: center;
-        }
-        .navigation {
-            width: 100%;
-            max-width: 900px;
-            display: flex;
-            justify-content: space-between;
-            margin: 34px auto 0 auto;
-        }
-        .arrow {
-            text-decoration: none;
-            color: #fff;
-            font-size: 2.5rem;
-            transition: color 0.3s;
-            margin: 0 30px;
-        }
-        .arrow:hover {
-            color: #00FF85;
-        }
-        @media (max-width: 750px) {
-            .slide-content { max-width: 99vw; }
-            .chart-container { padding: 8vw 2vw; max-width: 99vw; }
+        @media (max-width: 900px) {
+            .container { width: 98vw; }
+            #slide7-chart { width: 95vw !important; }
             h1 { font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
-    <div class="slide-content">
-        <h1>Code 63 Trend – % of Requests (July 2025)</h1>
-        <div class="subtitle">
-            Daily trend of Code 63 as a % of all ad requests. <br>
-            Key actions and events annotated.
-        </div>
-        <div class="chart-container">
-            <canvas id="code63Chart" height="260"></canvas>
-        </div>
-        <div class="annotation">
-            <span style="color:#ffdd57;">🟡 High Code 63 = More top apps blocked (loss of scale)</span>
-        </div>
-    </div>
-    <div class="navigation">
-        <a href="slide6.html" class="arrow">&#8592;</a>
-        <a href="slide8.html" class="arrow">&#8594;</a>
+    <div class="container">
+        <h1>Ad Requests & Code 63 Rate<br><span style="font-size:1.2rem;font-weight:500;">(July 1–26, 2025)</span></h1>
+        <canvas id="slide7-chart" width="1080" height="410"></canvas>
     </div>
     <script>
         const labels = [
-            '01/07','02/07','03/07','04/07','05/07','06/07','07/07','08/07','09/07','10/07',
-            '11/07','12/07','13/07','14/07','15/07','16/07','17/07','18/07','19/07','20/07',
-            '21/07','22/07','23/07','24/07','25/07','26/07'
+          "01/07", "02/07", "03/07", "04/07", "05/07", "06/07", "07/07", "08/07", "09/07", "10/07", "11/07", "12/07", "13/07", "14/07", "15/07", "16/07", "17/07", "18/07", "19/07", "20/07", "21/07", "22/07", "23/07", "24/07", "25/07", "26/07"
         ];
-        const code63Pct = [
-            21,21,19,19,19,20,22,26,24,25,26,24,25,20,10,11,13,11,14,10,10,12,12,11,11,13
+        const totalRequests = [
+            11727303054,11839331693,11298875353,10076843878,10536898684,11660106261,9743823944,6803798587,8545617418,8037564679,7386775378,6784234872,6229619796,4200062509,3216323857,2858945620,2735327563,2627372155,2959016993,3328924515,2933595990,2704850197,4637789983,6398835794,4629234455,4959410662
         ];
-
-        // Points for key actions
-        const actionPoints = [
-            { x: '06/07', y: 20, label: 'Revert to normal algo', color: '#00FF85' },
-            { x: '23/07', y: 12, label: 'Segment restructuring', color: '#16a085' },
-            { x: '08/07', y: 26, label: 'Top apps blocked', color: '#FF3B30' }
-        ];
-
-        const ctx = document.getElementById('code63Chart').getContext('2d');
+        const code63Rate = [21,21,19,19,19,20,22,26,24,25,26,24,25,20,10,11,13,11,14,10,10,12,12,11,11,13];
+        // Convert totals to billions for compact y-axis
+        const totalRequestsB = totalRequests.map(x => x / 1e9);
+        
+        const ctx = document.getElementById('slide7-chart').getContext('2d');
         const chart = new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: labels,
-                datasets: [{
-                    label: 'Code 63 %',
-                    data: code63Pct,
-                    fill: false,
-                    borderColor: '#00FF85',
-                    backgroundColor: '#00FF85',
-                    pointBorderColor: code63Pct.map(p=>p>=22?'#FF3B30':p>=19?'#ffdd57':'#00FF85'),
-                    pointBackgroundColor: code63Pct.map(p=>p>=22?'#FF3B30':p>=19?'#ffdd57':'#00FF85'),
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    tension: 0.18,
-                    borderWidth: 3
-                }]
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'Ad Requests (B)',
+                        data: totalRequestsB,
+                        backgroundColor: '#00FF85',
+                        borderRadius: 8,
+                        barThickness: 18,
+                        yAxisID: 'y',
+                    },
+                    {
+                        type: 'line',
+                        label: 'Code 63 Rate (%)',
+                        data: code63Rate,
+                        borderColor: '#FFD600',
+                        backgroundColor: '#FFD600',
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        borderWidth: 4,
+                        fill: false,
+                        yAxisID: 'y1',
+                        tension: 0.38
+                    }
+                ]
             },
             options: {
+                responsive: false,
                 plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: ctx => `Code 63: ${ctx.parsed.y}%`
-                        }
-                    },
-                    annotation: {
-                        annotations: actionPoints.map((pt, i) => ({
-                            type: 'point',
-                            xValue: pt.x,
-                            yValue: pt.y,
-                            backgroundColor: pt.color,
-                            radius: 8,
-                            borderColor: '#fff',
-                            borderWidth: 2,
-                            label: {
-                                enabled: true,
-                                position: 'start',
-                                backgroundColor: '#111',
-                                color: pt.color,
-                                font: { weight: 'bold', size: 14 },
-                                content: pt.label,
-                                yAdjust: (i-1)*-25-10
-                            }
-                        }))
-                    }
+                    legend: { display: true, labels: { color: '#fff', font: { size: 15 } } },
+                    tooltip: { mode: 'index', intersect: false },
                 },
                 scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 30,
-                        ticks: { color: '#fff', callback: v => v + '%' }
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date (July 2025)',
+                            color: '#fff',
+                            font: { size: 15, weight: 700 }
+                        },
+                        ticks: {
+                            color: '#fff',
+                            font: { size: 14 }
+                        },
+                        grid: {
+                            display: false
+                        }
                     },
-                    x: { ticks: { color: '#fff' } }
+                    y: {
+                        type: 'linear',
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Total Ad Requests (Billions)',
+                            color: '#00FF85',
+                            font: { size: 14, weight: 700 }
+                        },
+                        beginAtZero: true,
+                        min: 0,
+                        max: 13,
+                        ticks: {
+                            color: '#00FF85',
+                            font: { size: 14 },
+                            stepSize: 2
+                        },
+                        grid: {
+                            color: '#233'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        position: 'right',
+                        min: 0,
+                        max: 30,
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Code 63 Rate (%)',
+                            color: '#FFD600',
+                            font: { size: 14, weight: 700 }
+                        },
+                        ticks: {
+                            color: '#FFD600',
+                            font: { size: 14 },
+                            stepSize: 5,
+                            callback: function(value) { return value + '%'; }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
                 }
-            },
-            plugins: [{
-                id: 'custom-annotations',
-                afterDraw: chart => {
-                    const { ctx, chartArea: area } = chart;
-                    actionPoints.forEach(pt => {
-                        const i = labels.indexOf(pt.x);
-                        if (i === -1) return;
-                        const meta = chart.getDatasetMeta(0).data[i];
-                        if (!meta) return;
-                        ctx.save();
-                        ctx.beginPath();
-                        ctx.arc(meta.x, meta.y, 9, 0, 2 * Math.PI);
-                        ctx.strokeStyle = pt.color;
-                        ctx.lineWidth = 3;
-                        ctx.stroke();
-                        ctx.restore();
-                        ctx.font = 'bold 13px Poppins';
-                        ctx.fillStyle = pt.color;
-                        ctx.textAlign = 'center';
-                        ctx.fillText(pt.label, meta.x, meta.y - 22 - i*5);
-                    });
-                }
-            }]
+            }
         });
     </script>
 </body>
