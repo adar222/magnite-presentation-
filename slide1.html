@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnite 2025 Revenue Trend</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+        }
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+        h2 {
+            color: #2ecc71;
+            font-size: 2.3rem;
+            margin: 0 0 24px 0;
+            letter-spacing: 0.02em;
+        }
+        .chart-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            max-width: 1150px;
+            height: 420px;
+            margin: 0 auto 10px auto;
+            background: #000;
+            border-radius: 0px;
+            padding: 0;
+        }
+        .navigation {
+            position: absolute;
+            bottom: 20px;
+            width: 100vw;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-sizing: border-box;
+        }
+        .arrow {
+            text-decoration: none;
+            color: #fff;
+            font-size: 2.8rem;
+            padding: 10px 25px;
+            transition: color 0.3s, background 0.2s;
+            border-radius: 50%;
+            background: none;
+        }
+        .arrow:hover {
+            color: #2ecc71;
+            background: #222;
+        }
+        @media (max-width: 900px) {
+            .chart-wrapper {
+                max-width: 99vw;
+                height: 220px;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <h2>Magnite Daily Revenue Trend – 2025</h2>
+        <div class="chart-wrapper">
+            <canvas id="revenueChart"></canvas>
+        </div>
+        <div class="navigation">
+            <a href="index.html" class="arrow" title="Back">&#8592;</a>
+            <a href="slide2.html" class="arrow" title="Next">&#8594;</a>
+        </div>
+    </div>
+    <script>
+        // Only show every ~10th label for clarity
+        const dateLabels = [
+          "Jan 26", "", "", "", "", "Jan 31", "", "", "", "", "Feb 5", "", "", "", "", "Feb 10", "", "", "", "", "Feb 15", "", "", "", "", "Feb 20", "", "", "", "", "Feb 25", "", "", "", "", "Mar 2", "", "", "", "", "Mar 7", "", "", "", "", "Mar 12", "", "", "", "", "Mar 17", "", "", "", "", "Mar 22", "", "", "", "", "Mar 27", "", "", "", "", "Apr 1", "", "", "", "", "Apr 6", "", "", "", "", "Apr 11", "", "", "", "", "Apr 16", "", "", "", "", "Apr 21", "", "", "", "", "Apr 26", "", "", "", "", "May 1", "", "", "", "", "May 6", "", "", "", "", "May 11", "", "", "", "", "May 16", "", "", "", "", "May 21", "", "", "", "", "May 26", "", "", "", "", "May 31", "", "", "", "", "Jun 5", "", "", "", "", "Jun 10", "", "", "", "", "Jun 15", "", "", "", "", "Jun 20", "", "", "", "", "Jun 25", "", "", "", "", "Jun 30", "", "", "", "", "Jul 5", "", "", "", "", "Jul 10", "", "", "", "", "Jul 15", "", "", "", "", "Jul 20", "", "", "", "", "Jul 25", "", ""
+        ];
+        const revenueData = [
+            20212,22357,25405,32220,30256,31857,26042,24814,35285,34188,28109,30567,29985,25142,25850,28196,30082,27268,33638,36827,32878,27225,27121,31634,35637,35836,30878,27275,23217,48931,49039,34443,24746,32621,26494,20375,23583,27560,18795,23924,26587,22400,18880,30474,58218,33101,36721,36024,32130,19648,25186,37674,32669,27973,30228,21791,21794,31046,29016,29388,30194,28420,23393,17956,29287,38836,27220,27760,36083,20364,19119,25477,21489,25352,25703,22755,18397,14326,17100,17496,15661,19940,19217,18145,14954,18416,19810,20076,15631,16369,16245,13989,19703,18050,16040,18612,26449,43131,30062,22530,38827,43404,39120,27790,23326,16183,26943,46559,44648,26678,15075,16952,14798,13619,13802,13295,11824,16622,12196,13934,18666,17248,14277,14402,21848,18331,14446,18666,19164,22501,14295,12628,12880,16770,20227,27760,17368,12031,12724,11143,11240,12094,17023,15696,13598,16122,12652,9436,10799,13738,13572,23817,20864,21061,15819,25020,27430,48080,27721,29138,22364,18913,21407,13445,12572,11326,11553,10362,8876,9101,8788,6776,6478,7168,9665,11054,9062,7383,9486,11140,12467,11644,9358
+        ];
+
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dateLabels,
+                datasets: [{
+                    label: "Revenue ($)",
+                    data: revenueData,
+                    borderColor: "#2ecc71",
+                    backgroundColor: "rgba(46,204,113,0.13)",
+                    pointRadius: 0,
+                    borderWidth: 3,
+                    tension: 0.35,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                return ` $${context.parsed.y.toLocaleString()}`;
+                            }
+                        }
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    intersect: false
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: "#fff",
+                            maxRotation: 0,
+                            minRotation: 0,
+                        },
+                        grid: { color: "rgba(46,204,113,0.13)" }
+                    },
+                    y: {
+                        ticks: {
+                            color: "#fff",
+                            callback: function(value) { return '$' + value/1000 + 'K'; }
+                        },
+                        grid: { color: "rgba(46,204,113,0.07)" },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
