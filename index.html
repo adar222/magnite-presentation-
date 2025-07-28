@@ -1,1 +1,71 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnite Overview</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background-color: #000000; /* Black */
+            color: #ffffff; /* White Text */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .slide {
+            width: 90%;
+            max-width: 1200px;
+            height: 90%;
+            max-height: 800px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #2ecc71; /* Start.io Green */
+            border-radius: 15px;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+        }
+        .logo {
+            max-width: 250px; /* Increased size slightly for the new logo */
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 3rem;
+            color: #2ecc71; /* Start.io Green */
+            margin: 0;
+        }
+        .navigation {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+        .arrow {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 3rem;
+            padding: 10px;
+            transition: color 0.3s;
+        }
+        .arrow:hover {
+            color: #2ecc71; /* Start.io Green */
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <img src="start-io-logo.png" alt="Start.io Logo" class="logo">
+        <h1>Magnite overview</h1>
+        <div class="navigation">
+            <a href="slide1.html" class="arrow">&#8594;</a>
+        </div>
+    </div>
+</body>
+</html>
