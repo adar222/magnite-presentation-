@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide 6 - Actions Taken</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            background: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            font-family: 'Poppins', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .slide-content {
+            width: 96vw;
+            max-width: 900px;
+            margin-top: 44px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-size: 2.2rem;
+            color: #2ecc71;
+            margin-bottom: 18px;
+        }
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+            margin: 20px 0 28px 0;
+        }
+        .event {
+            display: flex;
+            align-items: flex-start;
+            gap: 26px;
+        }
+        .event-dot {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 3px solid #2ecc71;
+            background: #191919;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .event-date {
+            color: #00FF85;
+            min-width: 94px;
+            font-size: 1.12rem;
+            font-weight: 600;
+        }
+        .event-action {
+            font-size: 1.16rem;
+            color: #fff;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        .highlight {
+            color: #ffdd57;
+            font-weight: 600;
+            font-size: 1.08rem;
+            background: rgba(255,221,87,0.10);
+            padding: 4px 12px;
+            border-radius: 10px;
+            margin-top: 18px;
+        }
+        .navigation {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            margin: 38px auto 0 auto;
+        }
+        .arrow {
+            text-decoration: none;
+            color: #fff;
+            font-size: 2.5rem;
+            transition: color 0.3s;
+            margin: 0 30px;
+        }
+        .arrow:hover {
+            color: #2ecc71;
+        }
+        @media (max-width: 700px) {
+            .slide-content { max-width: 99vw; }
+            .event-date { min-width: 60px; font-size: 0.98rem; }
+            h1 { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-content">
+        <h1>Actions Taken (Last 30 Days)</h1>
+        <div class="timeline">
+            <div class="event">
+                <span class="event-dot" style="border-color: #ffdd57;">🛠️</span>
+                <span class="event-date">24.6.25</span>
+                <span class="event-action">Switched to skip DSM – created aggressive blocking</span>
+            </div>
+            <div class="event">
+                <span class="event-dot" style="border-color: #00FF85;">🔄</span>
+                <span class="event-date">6.7.25</span>
+                <span class="event-action">Reverted to normal algo</span>
+            </div>
+            <div class="event">
+                <span class="event-dot" style="border-color: #16a085;">🗂️</span>
+                <span class="event-date">23.7.25</span>
+                <span class="event-action">Segment restructuring – simplified targeting setup</span>
+            </div>
+            <div class="event">
+                <span class="event-dot" style="border-color: #FF3B30;">🚫</span>
+                <span class="event-date">July 2025</span>
+                <span class="event-action">Detected Code 63 – 100+ top apps blocked by Magnite</span>
+            </div>
+            <div class="event">
+                <span class="event-dot" style="border-color: #2980b9;">🤝</span>
+                <span class="event-date">Ongoing</span>
+                <span class="event-action">Talking to Magnite Quality Team to open blocked apps</span>
+            </div>
+            <div class="event">
+                <span class="event-dot" style="border-color: #9b59b6;">🔒</span>
+                <span class="event-date">Coming Soon</span>
+                <span class="event-action">Will get access to HUMAN for brand safety/IVT alignment</span>
+            </div>
+        </div>
+        <div class="highlight">
+            🟡 Note: We may need to rotate new compliant apps to recover scale.
+        </div>
+    </div>
+    <div class="navigation">
+        <a href="slide5.html" class="arrow">&#8592;</a>
+        <a href="slide7.html" class="arrow">&#8594;</a>
+    </div>
+</body>
+</html>
