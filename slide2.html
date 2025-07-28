@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnite 2025 Requests D Trend</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+        }
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+        h2 {
+            color: #2ecc71;
+            font-size: 2.3rem;
+            margin: 0 0 24px 0;
+            letter-spacing: 0.02em;
+        }
+        .chart-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            max-width: 1150px;
+            height: 420px;
+            margin: 0 auto 10px auto;
+            background: #000;
+            border-radius: 0px;
+            padding: 0;
+        }
+        .navigation {
+            position: absolute;
+            bottom: 20px;
+            width: 100vw;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-sizing: border-box;
+        }
+        .arrow {
+            text-decoration: none;
+            color: #fff;
+            font-size: 2.8rem;
+            padding: 10px 25px;
+            transition: color 0.3s, background 0.2s;
+            border-radius: 50%;
+            background: none;
+        }
+        .arrow:hover {
+            color: #2ecc71;
+            background: #222;
+        }
+        @media (max-width: 900px) {
+            .chart-wrapper {
+                max-width: 99vw;
+                height: 220px;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <h2>Magnite Daily Requests D – 2025</h2>
+        <div class="chart-wrapper">
+            <canvas id="requestsChart"></canvas>
+        </div>
+        <div class="navigation">
+            <a href="slide1.html" class="arrow" title="Back">&#8592;</a>
+            <a href="slide3.html" class="arrow" title="Next">&#8594;</a>
+        </div>
+    </div>
+    <script>
+        const dateLabels = [
+          "Jan 26", "", "", "", "", "Jan 31", "", "", "", "", "Feb 5", "", "", "", "", "Feb 10", "", "", "", "", "Feb 15", "", "", "", "", "Feb 20", "", "", "", "", "Feb 25", "", "", "", "", "Mar 2", "", "", "", "", "Mar 7", "", "", "", "", "Mar 12", "", "", "", "", "Mar 17", "", "", "", "", "Mar 22", "", "", "", "", "Mar 27", "", "", "", "", "Apr 1", "", "", "", "", "Apr 6", "", "", "", "", "Apr 11", "", "", "", "", "Apr 16", "", "", "", "", "Apr 21", "", "", "", "", "Apr 26", "", "", "", "", "May 1", "", "", "", "", "May 6", "", "", "", "", "May 11", "", "", "", "", "May 16", "", "", "", "", "May 21", "", "", "", "", "May 26", "", "", "", "", "May 31", "", "", "", "", "Jun 5", "", "", "", "", "Jun 10", "", "", "", "", "Jun 15", "", "", "", "", "Jun 20", "", "", "", "", "Jun 25", "", "", "", "", "Jun 30", "", "", "", "", "Jul 5", "", "", "", "", "Jul 10", "", "", "", "", "Jul 15", "", "", "", "", "Jul 20", "", "", "", "", "Jul 25", "", ""
+        ];
+        const requestsData = [
+            32088487608,29154419576,19600144600,16938968255,17653184122,17384759320,17319015098,17498042362,19507378318,17272218010,17128274542,15108520088,15208424923,16148917314,15186239658,12587786747,13197005669,12558444039,12468238634,12193206449,13913336337,14288021446,13977291312,13520436860,14570276520,15041565740,15028981423,17198371734,15976113711,12543980438,11539927201,12053474141,11722645978,10636513915,11752177690,11594618267,11041583012,10862407201,10215250886,10406172170,10582109734,11444201302,11118808664,9882767509,10222191187,10138048834,10278676777,10207786961,9590984647,9404252121,9138538816,9222133512,10120672973,10649506800,11721597638,11120135555,10330833175,9710466832,9826377476,9659555710,9593960312,9691749848,9885874289,9280662786,8600736495,9185814944,9048635404,9150350888,9516091745,9374215323,8440450132,8542226630,9346853830,9698583431,9479704863,9943918287,10270715211,9303754448,8991372122,9403000614,8865985464,8693324104,8793747630,8280536728,7215458325,6431486066,6498006894,6040113437,6707843524,6774741109,7054517068,7330269996,7415497829,6845433387,6576661322,6213638476,5720144462,6341699894,6243590606,5579244493,5775538938,5195850097,5354737944,4553034036,4483615309,4246307587,4363419408,4538577663,4921570687,4679204436,4423712642,4237100483,4524592181,5764633973,5691792109,4536341957,4875961248,5080167478,5097986888,5168325258,5115417160,5122424925,5332645367,5037827993,5310301056,5087636081,5283843782,5000450559,4813573326,4937019823,4794123615,4500937331,4054488073,3662202932,3396823879,3248383411,3905689501,4405833283,4686957182,4329933978,3992782976,4275342580,4136864997,4098077682,3848837709,3460122908,4082585737,3873126555,4165395621,4141340964,7175035840,10648585850,11116199525,10653487300,10811601391,11566898736,11751357137,11882296277,11164182112,10080396087,10602567700,11705714775,9334425088,7060021269,8482439740,7944858563,7375569890,6742942666,6358077037,4004555908,3232081841,2839148819,2774362392,2622213213,2968813561,3319900040,2918292440,2689633062,4909302678,6287281756,4587077193,5052882673,4989936391
+        ];
+
+        const ctx = document.getElementById('requestsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dateLabels,
+                datasets: [{
+                    label: "Requests D",
+                    data: requestsData,
+                    borderColor: "#2ecc71",
+                    backgroundColor: "rgba(46,204,113,0.13)",
+                    pointRadius: 0,
+                    borderWidth: 3,
+                    tension: 0.35,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                return ` ${context.parsed.y.toLocaleString()}`;
+                            }
+                        }
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    intersect: false
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: "#fff",
+                            maxRotation: 0,
+                            minRotation: 0,
+                        },
+                        grid: { color: "rgba(46,204,113,0.13)" }
+                    },
+                    y: {
+                        ticks: {
+                            color: "#fff",
+                            callback: function(value) { return value/1e9 + 'B'; }
+                        },
+                        grid: { color: "rgba(46,204,113,0.07)" },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
