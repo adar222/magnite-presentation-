@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnite Revenue by Ad Format</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+        }
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+        h2 {
+            color: #2ecc71;
+            font-size: 2.3rem;
+            margin: 0 0 24px 0;
+            letter-spacing: 0.02em;
+        }
+        .chart-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            max-width: 1250px;
+            height: 440px;
+            margin: 0 auto 10px auto;
+            background: #000;
+            border-radius: 0px;
+            padding: 0;
+        }
+        .navigation {
+            position: absolute;
+            bottom: 20px;
+            width: 100vw;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-sizing: border-box;
+        }
+        .arrow {
+            text-decoration: none;
+            color: #fff;
+            font-size: 2.8rem;
+            padding: 10px 25px;
+            transition: color 0.3s, background 0.2s;
+            border-radius: 50%;
+            background: none;
+        }
+        .arrow:hover {
+            color: #2ecc71;
+            background: #222;
+        }
+        @media (max-width: 900px) {
+            .chart-wrapper {
+                max-width: 99vw;
+                height: 210px;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <h2>Revenue Breakdown by Ad Format – 2025</h2>
+        <div class="chart-wrapper">
+            <canvas id="adFormatChart"></canvas>
+        </div>
+        <div class="navigation">
+            <a href="slide3.html" class="arrow" title="Back">&#8592;</a>
+            <a href="slide5.html" class="arrow" title="Next">&#8594;</a>
+        </div>
+    </div>
+    <script>
+        // Date labels (condensed for space)
+        const dateLabels = [
+            "Jul 27", "Jul 24", "Jul 21", "Jul 18", "Jul 15", "Jul 12", "Jul 9", "Jul 6", "Jul 3", "Jun 30", "Jun 27", "Jun 24", "Jun 21", "Jun 18", "Jun 15", "Jun 12", "Jun 9", "Jun 6", "Jun 3", "May 31", "May 28", "May 25", "May 22", "May 19", "May 16", "May 13", "May 10", "May 7", "May 4", "May 1", "Apr 28", "Apr 25", "Apr 22", "Apr 19", "Apr 16", "Apr 13", "Apr 10", "Apr 7", "Apr 4", "Apr 1", "Mar 29", "Mar 26", "Mar 23", "Mar 20", "Mar 17", "Mar 14", "Mar 11", "Mar 8", "Mar 5", "Mar 2", "Feb 27", "Feb 24", "Feb 21", "Feb 18", "Feb 15", "Feb 12", "Feb 9", "Feb 6", "Feb 3", "Jan 31", "Jan 28", "Jan 26"
+        ];
+        // Data for each ad format (reversed for chronological order)
+        const bannerData = [18407.13, 18744.74, 19731.34, 18671.53, 20256.82, 18625.91, 18823.59, 17601.71, 17807.61, 17286.31, 18084.3, 16243.99, 15475.53, 12765.71, 11295.64, 14302.78, 19556.82, 18150.84, 20216.8, 15477.85, 16338.87, 19523.11, 23764.02, 23121.2, 25162.41, 26189.31, 22965.55, 26086.34, 28296.06, 28254.54, 25529.96, 24385.72, 24827.33, 22505.66, 27395.61, 29005.01, 28793.23, 24883.28, 24228.74, 22095.47, 17691.74, 21991.49, 21037.55, 19248.85, 20324.29, 21568.61, 17766.34, 15752.11, 16658.75, 16742.28, 17986.34, 17317.54, 16435.04, 17743.11, 16486.28, 16293.81, 15885.11, 17420.84, 16799.47, 17935.8, 20452.06, 19789.6];
+        const interstitialData = [50788.24, 57424.8, 55577.06, 54776.39, 58509.42, 55143.42, 55179.77, 46356.97, 42943.77, 45946.62, 45477.18, 47709.33, 50156.24, 56298.04, 45060.11, 48385.75, 45562.97, 41886.66, 44739.59, 43367.96, 56456.37, 52711.14, 53741.2, 50078.48, 50573.13, 55489.84, 54029.65, 60363.23, 58202.88, 62820.86, 60635.47, 59705.95, 63161.76, 66435.62, 50796.8, 45100.31, 49348.63, 50536.97, 43336.35, 33969.55, 25686.47, 29539.15, 31649.7, 33255.04, 35500.6, 41676.99, 35833.28, 35269.03, 35766.91, 33999.47, 33506.86, 39791.71, 38217.64, 41686.95, 44802.39, 37515.91, 34324.42, 35103.57, 39373.84, 47161.01, 41515.3, 39722.74];
+        const richTextData = [81604.96, 74395.27, 80857.27, 73193.83, 74607.85, 70487.21, 63514.46, 64208.96, 63774.66, 64364.2, 65847.54, 72667.95, 75006.1, 73097.57, 72781.09, 71576.69, 73319.05, 71713.09, 65147.21, 61534.74, 63691.01, 63474.86, 72288.43, 77180.65, 80086.97, 85636.21, 77579.63, 75902.22, 70636.27, 72419.05, 71525.18, 77867.4, 76249.83, 75036.85, 76875.68, 72855.29, 77439.43, 78460.73, 80847.04, 67949.71, 64354.05, 61165.99, 52149.75, 50160.86, 54980.79, 54449.68, 55693.73, 58172.31, 56063.5, 54621.17, 59381.9, 61718.66, 63864.12, 75835.86, 75820.22, 69902.19, 63454.85, 80362.35, 77679.99, 61334.16, 63241.56, 63054.2];
+        const videoData = [106216.85, 105210.02, 99136.39, 91080.51, 90540.07, 100224.17, 92097.7, 87528.44, 85239.52, 80007.04, 82411.88, 74075.53, 83497.24, 84114.29, 76575.36, 79824.92, 95775.18, 95272.97, 86887.64, 86651.99, 100613.26, 109079.9, 128415.83, 120266.64, 112159.21, 121220.56, 133723.39, 146974.39, 98663.09, 105375.91, 114325.46, 119070.17, 105167.97, 63038.53, 73462.51, 68062.19, 69017.66, 68103.98, 63380.57, 63243.09, 59465.15, 52286.64, 52904.97, 46654.36, 43069.8, 37772.55, 41949.25, 54662.46, 49918.75, 43135.96, 39090.06, 40634.16, 46045.25, 44556.66, 47911.93, 46096.1, 51878.79, 47325.09, 46566.87, 47694.24, 51796.83, 45099.04];
+
+        // Use full arrays, display 60 points (every ~2-3 days, for clarity)
+        const N = 60;
+        function sample(arr) {
+            if (arr.length <= N) return arr;
+            let out = [];
+            for (let i = 0; i < N; i++) out.push(arr[Math.round(i * (arr.length-1)/(N-1))]);
+            return out;
+        }
+        const labels = sample(dateLabels);
+        const banner = sample(bannerData);
+        const interstitial = sample(interstitialData);
+        const richText = sample(richTextData);
+        const video = sample(videoData);
+
+        const ctx = document.getElementById('adFormatChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Banner',
+                        data: banner,
+                        borderColor: '#2ecc71',
+                        backgroundColor: 'rgba(46,204,113,0.1)',
+                        borderWidth: 2,
+                        pointRadius: 1,
+                        tension: 0.4,
+                        fill: false,
+                    },
+                    {
+                        label: 'Interstitial',
+                        data: interstitial,
+                        borderColor: '#12bcf4', // blue Start.io
+                        backgroundColor: 'rgba(18,188,244,0.08)',
+                        borderWidth: 2,
+                        pointRadius: 1,
+                        tension: 0.4,
+                        fill: false,
+                    },
+                    {
+                        label: 'Rich Text',
+                        data: richText,
+                        borderColor: '#b967ff', // purple accent
+                        backgroundColor: 'rgba(185,103,255,0.09)',
+                        borderWidth: 2,
+                        pointRadius: 1,
+                        tension: 0.4,
+                        fill: false,
+                    },
+                    {
+                        label: 'Video',
+                        data: video,
+                        borderColor: '#ffed4a', // yellow Start.io
+                        backgroundColor: 'rgba(255,237,74,0.08)',
+                        borderWidth: 2,
+                        pointRadius: 1,
+                        tension: 0.4,
+                        fill: false,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#fff',
+                            font: { size: 15 }
+                        },
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': $' + Number(context.parsed.y).toLocaleString();
+                            }
+                        }
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    intersect: false
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#fff' },
+                        grid: { color: 'rgba(46,204,113,0.08)' }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#fff',
+                            callback: function(value) { return '$' + Math.round(value).toLocaleString(); }
+                        },
+                        grid: { color: 'rgba(46,204,113,0.08)' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
