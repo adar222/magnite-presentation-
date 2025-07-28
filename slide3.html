@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnite 2025 RPM Trend</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+        }
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+        h2 {
+            color: #2ecc71;
+            font-size: 2.3rem;
+            margin: 0 0 24px 0;
+            letter-spacing: 0.02em;
+        }
+        .chart-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            max-width: 1150px;
+            height: 420px;
+            margin: 0 auto 10px auto;
+            background: #000;
+            border-radius: 0px;
+            padding: 0;
+        }
+        .navigation {
+            position: absolute;
+            bottom: 20px;
+            width: 100vw;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-sizing: border-box;
+        }
+        .arrow {
+            text-decoration: none;
+            color: #fff;
+            font-size: 2.8rem;
+            padding: 10px 25px;
+            transition: color 0.3s, background 0.2s;
+            border-radius: 50%;
+            background: none;
+        }
+        .arrow:hover {
+            color: #2ecc71;
+            background: #222;
+        }
+        @media (max-width: 900px) {
+            .chart-wrapper {
+                max-width: 99vw;
+                height: 220px;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <h2>Magnite Daily RPM – 2025</h2>
+        <div class="chart-wrapper">
+            <canvas id="rpmChart"></canvas>
+        </div>
+        <div class="navigation">
+            <a href="slide2.html" class="arrow" title="Back">&#8592;</a>
+            <a href="slide4.html" class="arrow" title="Next">&#8594;</a>
+        </div>
+    </div>
+    <script>
+        const dateLabels = [
+          "Jan 26", "", "", "", "", "Jan 31", "", "", "", "", "Feb 5", "", "", "", "", "Feb 10", "", "", "", "", "Feb 15", "", "", "", "", "Feb 20", "", "", "", "", "Feb 25", "", "", "", "", "Mar 2", "", "", "", "", "Mar 7", "", "", "", "", "Mar 12", "", "", "", "", "Mar 17", "", "", "", "", "Mar 22", "", "", "", "", "Mar 27", "", "", "", "", "Apr 1", "", "", "", "", "Apr 6", "", "", "", "", "Apr 11", "", "", "", "", "Apr 16", "", "", "", "", "Apr 21", "", "", "", "", "Apr 26", "", "", "", "", "May 1", "", "", "", "", "May 6", "", "", "", "", "May 11", "", "", "", "", "May 16", "", "", "", "", "May 21", "", "", "", "", "May 26", "", "", "", "", "May 31", "", "", "", "", "Jun 5", "", "", "", "", "Jun 10", "", "", "", "", "Jun 15", "", "", "", "", "Jun 20", "", "", "", "", "Jun 25", "", "", "", "", "Jun 30", "", "", "", "", "Jul 5", "", "", "", "", "Jul 10", "", "", "", "", "Jul 15", "", "", "", "", "Jul 20", "", "", "", "", "Jul 25", "", ""
+        ];
+        const rpmData = [
+            0.00063,0.00077,0.00130,0.00190,0.00171,0.00183,0.00150,0.00142,0.00181,0.00198,0.00164,0.00202,0.00197,0.00156,0.00170,0.00224,0.00228,0.00217,0.00270,0.00302,0.00236,0.00191,0.00194,0.00234,0.00245,0.00238,0.00205,0.00159,0.00145,0.00390,0.00425,0.00286,0.00211,0.00307,0.00225,0.00176,0.00214,0.00254,0.00184,0.00230,0.00251,0.00196,0.00170,0.00308,0.00570,0.00327,0.00357,0.00353,0.00335,0.00209,0.00276,0.00409,0.00323,0.00263,0.00258,0.00196,0.00211,0.00320,0.00295,0.00304,0.00315,0.00293,0.00237,0.00193,0.00341,0.00423,0.00301,0.00303,0.00379,0.00217,0.00227,0.00298,0.00230,0.00261,0.00271,0.00229,0.00179,0.00154,0.00190,0.00186,0.00177,0.00229,0.00219,0.00219,0.00207,0.00286,0.00305,0.00332,0.00233,0.00242,0.00230,0.00191,0.00266,0.00263,0.00244,0.00300,0.00462,0.00680,0.00481,0.00404,0.00672,0.00835,0.00731,0.00610,0.00520,0.00381,0.00617,0.01026,0.00907,0.00570,0.00341,0.00400,0.00327,0.00236,0.00242,0.00293,0.00242,0.00327,0.00239,0.00270,0.00365,0.00337,0.00268,0.00286,0.00411,0.00360,0.00273,0.00373,0.00398,0.00456,0.00298,0.00281,0.00318,0.00458,0.00595,0.00855,0.00445,0.00273,0.00271,0.00257,0.00282,0.00283,0.00411,0.00383,0.00353,0.00466,0.00310,0.00244,0.00259,0.00332,0.00189,0.00224,0.00188,0.00198,0.00146,0.00216,0.00233,0.00405,0.00248,0.00289,0.00211,0.00162,0.00229,0.00190,0.00148,0.00143,0.00157,0.00154,0.00140,0.00227,0.00272,0.00239,0.00234,0.00273,0.00326,0.00333,0.00311,0.00275,0.00193,0.00177,0.00272,0.00230,0.00188
+        ];
+
+        const ctx = document.getElementById('rpmChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dateLabels,
+                datasets: [{
+                    label: "RPM ($)",
+                    data: rpmData,
+                    borderColor: "#2ecc71",
+                    backgroundColor: "rgba(46,204,113,0.13)",
+                    pointRadius: 0,
+                    borderWidth: 3,
+                    tension: 0.35,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                return ` $${context.parsed.y.toFixed(5)}`;
+                            }
+                        }
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    intersect: false
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: "#fff",
+                            maxRotation: 0,
+                            minRotation: 0,
+                        },
+                        grid: { color: "rgba(46,204,113,0.13)" }
+                    },
+                    y: {
+                        ticks: {
+                            color: "#fff",
+                            callback: function(value) { return value.toFixed(3); }
+                        },
+                        grid: { color: "rgba(46,204,113,0.07)" },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
